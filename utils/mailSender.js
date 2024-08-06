@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const mailSender = async (email, title, body) => {
+exports.mailSender = async (email, title, body) => {
   try {
     let transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
@@ -10,18 +10,17 @@ const mailSender = async (email, title, body) => {
       },
     });
 
-    let info = transporter.sendMail({
-      from: "SkillNest",
+    let info = await transporter.sendMail({
+      from: "StudyLoop",
       to: `${email}`,
       subject: `${title}`,
       html: `${body}`,
     });
+
+    console.log(info);
   } catch (error) {
     console.log(error.message);
   }
 
-  console.log(info);
-  return info;
+  return info; // should be return in try bloack = check
 };
-
-module.exports = mailSender;
