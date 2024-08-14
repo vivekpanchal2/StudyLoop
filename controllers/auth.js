@@ -1,15 +1,14 @@
-const User = require("../models/user");
-const OTP = require("../models/otp");
-const Profile = require("../models/profile");
+const User = require("../models/userModel");
+const OTP = require("../models/otpModel");
+const Profile = require("../models/profileModel");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 require("dotenv").config();
 
 //generate otp
-exports.otpGenerate = async (req, res) => {
+exports.sendOtp = async (req, res) => {
   try {
     const email = req.body.email;
 
@@ -93,16 +92,18 @@ exports.signUp = async (req, res) => {
     }
 
     // find recent otp - because there can be mulltiple otp on one email
-
-    const recentOtp = await OTP.findOne({ email })
+    const recentOtp = await OTP.find({ email })
       .sort({ createdAt: -1 })
       .limit(1);
-    console.log(recentOtp);
+
+    console.log("recent otp is ", recentOtp);
 
     if (recentOtp.length == 0) {
       res.status(400).json({ success: false, message: "OTP not exists" });
-    } else if (otp !== recentOtp.otp) {
+      return;
+    } else if (otp !== recentOtp[0].otp.toString()) {
       res.status(400).json({ success: false, message: "invalid OTP" });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

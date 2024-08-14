@@ -1,9 +1,9 @@
-const User = require("../models/user");
+const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const mailSender = require("../utils/mailSender");
+const { mailSender } = require("../utils/mailSender");
 
-exports.resetPasswordToken = async () => {
+exports.resetPasswordToken = async (req, res) => {
   try {
     const email = req.body.email;
     const user = await User.findOne({ email: email });

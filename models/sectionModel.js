@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const subSection = require("./subSection");
+const subSection = require("./subSectionModel");
 
 const sectionSchema = mongoose.Schema({
   sectionName: {
@@ -8,7 +8,7 @@ const sectionSchema = mongoose.Schema({
   subSection: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "SubSection",
+      ref: "subSection",
       required: true,
     },
   ],

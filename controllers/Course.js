@@ -1,27 +1,42 @@
-const Course = require("../models/course");
-const Category = require("../models/category");
-const User = require("../models/user");
+const Course = require("../models/courseModel");
+const Category = require("../models/categoryModel");
+const User = require("../models/userModel");
 const { uploadImageToCloudinary } = require("../utils/imageUpload");
-const category = require("../models/category");
 
 exports.createCourse = async (req, res) => {
   try {
-    const { courseName, courseDescription, whatYouWillLearn, price, Category } =
-      req.body;
+    let {
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      price,
+      category,
+      status,
+      instructions: _instructions,
+      tag: _tag,
+    } = req.body;
 
     const thumbnail = req.files.thumbnailImage;
+    const tag = JSON.parse(_tag);
+    const instructions = JSON.parse(_instructions);
 
     if (
       !courseName ||
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !category
+      !category ||
+      !instructions.length ||
+      !tag.length
     ) {
       return res.status(400).json({
         success: false,
         message: "All Fields are required",
       });
+    }
+
+    if (!status || status === undefined) {
+      status = "Draft";
     }
 
     const userId = req.user.id;
@@ -54,8 +69,11 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn,
       price,
+      tag,
       category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
+      status: status,
+      instructions,
     });
 
     await User.findByIdAndUpdate(
@@ -71,7 +89,7 @@ exports.createCourse = async (req, res) => {
     // update categorySchema
 
     await Category.findByIdAndUpdate(
-      { _id: category._id },
+      category,
       {
         $push: {
           courses: newCourse._id,
@@ -120,6 +138,29 @@ exports.showAllCourse = async (req, res) => {
       success: false,
       message: "Failed to fetch Courses ",
       error: error.message,
+    });
+  }
+};
+
+exports.getCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    console.log(courseId);
+    const courseDetails = await Course.findById(courseId).populate({
+      path: "courseContent",
+      populate: {
+        path: "subSection",
+      },
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Course details fetched succsessfully",
+      courseDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
     });
   }
 };

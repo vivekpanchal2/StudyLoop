@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { mailSender } = require("../utils/mailSender");
+const emailTemplate = require("../mails/templates/emailVerificationTemplate");
 
 const OTPSchema = mongoose.Schema({
   email: {
@@ -21,7 +23,7 @@ async function sendVerificationEmail(email, otp) {
     const mailResponse = await mailSender(
       email,
       "Verification Email From SkillNest",
-      otp
+      emailTemplate(otp)
     );
 
     console.log("Mail send successfully ", mailResponse);
@@ -32,7 +34,11 @@ async function sendVerificationEmail(email, otp) {
 }
 
 OTPSchema.pre("save", async function (next) {
-  await sendVerificationEmail(this.email, this.otp);
+  console.log("New document saved to database");
+
+  if (this.isNew) {
+    await sendVerificationEmail(this.email, this.otp);
+  }
   next();
 });
 

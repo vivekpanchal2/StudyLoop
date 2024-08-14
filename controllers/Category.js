@@ -1,5 +1,4 @@
-const category = require("../models/category");
-const Category = require("../models/category");
+const Category = require("../models/categoryModel");
 
 exports.createCategory = async (req, res) => {
   try {
@@ -32,7 +31,7 @@ exports.createCategory = async (req, res) => {
 
 // get all category
 
-exports.showAllCategory = async (req, res) => {
+exports.showAllCategories = async (req, res) => {
   try {
     const allCategory = await Category.find(
       {},
@@ -42,6 +41,7 @@ exports.showAllCategory = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "All Categories Fetched Successfully",
+      data: allCategory,
     });
   } catch (error) {
     return res.status(500).json({

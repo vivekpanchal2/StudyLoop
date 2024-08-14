@@ -1,11 +1,11 @@
 const { uploadImageToCloudinary } = require("../utils/imageUpload");
-const SubSection = require("../models/subSection");
-const Section = require("../models/section");
-const subSection = require("../models/subSection");
 
-exports.createSubsection = async (req, res) => {
+const Section = require("../models/sectionModel");
+const SubSection = require("../models/subSectionModel");
+
+exports.createSubSection = async (req, res) => {
   try {
-    const { sectionId, title, description } = req.body;
+    const { sectionId, title, description, timeDuration } = req.body;
 
     if (!sectionId || !title || !timeDuration || !description) {
       return res.status(400).json({
@@ -20,6 +20,8 @@ exports.createSubsection = async (req, res) => {
       video,
       process.env.FOLDER_NAME
     );
+
+    console.log(uploadVideoDetails);
 
     const subSectionDetails = await SubSection.create({
       title,
@@ -43,7 +45,7 @@ exports.createSubsection = async (req, res) => {
     ).populate("subSection");
 
     return res.status(200).json({
-      success: false,
+      success: true,
       message: "SubSection created successfully",
       data: updatedSection,
     });
@@ -59,18 +61,20 @@ exports.createSubsection = async (req, res) => {
 
 exports.updateSubSection = async (req, res) => {
   try {
-    const { title, subSectionId, timeDuration, description } = req.body;
+    const { title, subSectionId, sectionId, description } = req.body;
 
-    if (!sectionId || !title || !timeDuration || !description) {
+    console.log({ title, subSectionId, sectionId, description });
+
+    if (!subSectionId || !title || !sectionId || !description) {
       return res.status(400).json({
         success: false,
         message: "Missing properties",
       });
     }
 
-    const subSection = await SubSection.findById(subSectionId);
+    const subSectionDetails = await SubSection.findById(subSectionId);
 
-    if (!subSection) {
+    if (!subSectionDetails) {
       return res.status(404).json({
         success: false,
         message: "Sub-Section not found",
@@ -78,11 +82,11 @@ exports.updateSubSection = async (req, res) => {
     }
 
     if (title !== undefined) {
-      subSection.title = title;
+      subSectionDetails.title = title;
     }
 
     if (description !== undefined) {
-      subSection.description = description;
+      subSectionDetails.description = description;
     }
 
     if (req.files || req.files.videoFile !== undefined) {
@@ -92,15 +96,16 @@ exports.updateSubSection = async (req, res) => {
         process.env.FOLDER_NAME
       );
 
-      subSection.videoUrl = uploadVideoDetails.secure_url;
-      subSection.timeDuration = `${uploadVideoDetails.duration}`;
+      subSectionDetails.videoUrl = uploadVideoDetails.secure_url;
+      subSectionDetails.timeDuration = `${uploadVideoDetails.duration}`;
     }
+    console.log("Yaha tak ka complete hai iske baad chuda hai");
 
-    await subSection.save();
+    await subSectionDetails.save();
 
-    const updatedSection = await subSection
-      .findById(sectionId)
-      .populate("subSection");
+    const updatedSection = await Section.findById(sectionId).populate(
+      "subSection"
+    );
 
     console.log("updated section", updatedSection);
 
@@ -118,7 +123,7 @@ exports.updateSubSection = async (req, res) => {
   }
 };
 
-exports.deleteSubsection = async (req, res) => {
+exports.deleteSubSection = async (req, res) => {
   try {
     const { subSectionId, sectionId } = req.body;
 
