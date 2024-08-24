@@ -7,6 +7,10 @@ import Contact from "./pages/Contact";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import VerifyEmail from "../src/pages/VarifyEmail";
+import Dashboard from "./pages/Dashboard";
+import MyProfile from "./components/core/Dashboard/MyProfile";
+import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
+import Settings from "./components/core/Dashboard/setting";
 
 function App() {
   return (
@@ -19,6 +23,14 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="/dashboard/my-profile" element={<MyProfile />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
+          <Route
+            path="/dashboard/enrolled-courses"
+            element={<EnrolledCourses />}
+          />
+        </Route>
       </Routes>
     </div>
   );

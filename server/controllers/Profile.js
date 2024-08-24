@@ -4,47 +4,46 @@ const { uploadImageToCloudinary } = require("../utils/imageUpload");
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { gender, dateOfBirth = "", about, contactNumber } = req.body;
+    const { dateOfBirth, about, contactNumber, firstName, lastName, gender } =
+      req.body;
 
-    if (!gender || !contactNumber || !about) {
-      return res.status(400).json({
-        success: false,
-        message: "Required Fileds are should must be filled",
-      });
+    const id = req.user.id;
+
+    // Find the profile by id
+    const userDetails = await User.findById(id).populate("additionalDetails");
+    console.log(userDetails);
+    const profile = await Profile.findById(userDetails.additionalDetails._id);
+
+    // Update the profile fields
+    if (userDetails) {
+      userDetails.firstName = firstName || userDetails.firstName;
+      userDetails.lastName = lastName || userDetails.lastName;
+      await userDetails.save();
     }
-    const userId = req.user.id;
 
-    if (!userId) {
-      return res.status(400).json({
-        success: false,
-        message: "User is not defined",
-      });
+    if (profile) {
+      profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
+      profile.about = about || profile.about;
+      profile.gender = gender || profile.gender;
+      profile.contactNumber = contactNumber || profile.contactNumber;
+      await profile.save();
     }
 
-    const userDetails = await User.findById(userId);
-    const profile = await Profile.findById(userDetails.additionalDetails);
-
-    profile.dateOfBirth = dateOfBirth;
-    profile.about = about;
-    profile.contactNumber = contactNumber;
-    profile.gender = gender;
-
-    await profile.save();
-
-    const updatedUserDetails = await User.findById(userId)
-      .populate("additionalDetails")
-      .exec();
+    const updatedUserDetails = await User.findById(id).populate(
+      "additionalDetails"
+    );
 
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedUserDetails,
+      profile,
+      userDetails: updatedUserDetails,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      error: "Error :  " + error.message,
+      error: error.message,
     });
   }
 };
@@ -118,12 +117,74 @@ exports.updateDisplayPicture = async (req, res) => {
         image: image.secure_url,
       },
       { new: true }
-    );
+    ).populate("additionalDetails");
 
     res.send({
       success: true,
       message: "Image uploaded successfully",
       data: updatedProfile,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getEnrolledCourses = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const enrolledCourses = await User.findById(id)
+      .populate({
+        path: "courses",
+        populate: {
+          path: "courseContent",
+        },
+      })
+      .populate("courseProgress")
+      .exec();
+    // console.log(enrolledCourses);
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      data: enrolledCourses,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.instructorDashboard = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const courseData = await Course.find({ instructor: id });
+    const courseDetails = courseData.map((course) => {
+      totalStudents = course?.studentsEnrolled?.length;
+      totalRevenue = course?.price * totalStudents;
+      const courseStats = {
+        _id: course._id,
+        courseName: course.courseName,
+        courseDescription: course.courseDescription,
+        totalStudents,
+        totalRevenue,
+      };
+      return courseStats;
+    });
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      data: courseDetails,
     });
   } catch (error) {
     return res.status(500).json({

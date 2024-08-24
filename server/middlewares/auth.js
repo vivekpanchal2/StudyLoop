@@ -20,7 +20,8 @@ exports.auth = async (req, res, next) => {
     //verify the token
 
     try {
-      const decode = await jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Kya ye chal raha hai");
+      const decode = jwt.verify(token, process.env.JWT_SECRET);
       console.log(decode);
       req.user = decode;
     } catch (error) {
@@ -29,6 +30,8 @@ exports.auth = async (req, res, next) => {
         message: "Token is invaild",
       });
     }
+
+    console.log("yaha pr aaya tha 5");
 
     next();
   } catch (error) {

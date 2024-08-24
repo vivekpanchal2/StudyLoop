@@ -28,7 +28,7 @@ function Navbar() {
       setLoading(true);
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API);
-        console.log("res:", res);
+        // console.log("res:", res);
         if (res !== null) {
           setSubLinks(res.data.data);
         }
@@ -39,12 +39,9 @@ function Navbar() {
     })();
   }, []);
 
-  console.log("sub links", subLinks);
-
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
   };
-  console.log(matchRoute);
 
   return (
     <div
@@ -118,8 +115,10 @@ function Navbar() {
             ))}
           </ul>
         </nav>
+
         {/* Login / Signup / Dashboard */}
-        <div className="hidden items-center gap-x-4 md:block">
+
+        <div className="flex-row gap-5 hidden md:flex items-center">
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
@@ -146,6 +145,7 @@ function Navbar() {
           )}
           {token !== null && <ProfileDropdown />}
         </div>
+
         <button className="mr-4 md:hidden">
           <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
         </button>
