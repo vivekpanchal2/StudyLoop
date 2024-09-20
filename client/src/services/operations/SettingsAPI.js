@@ -72,11 +72,9 @@ export function updateProfile(token, formData) {
 
       const { userDetails, profile } = response.data;
 
-      // Log the updated data
       console.log("Updated userDetails:", userDetails);
       console.log("Updated profile:", profile);
 
-      // Dispatch action to update the Redux store
       dispatch(setUser(userDetails));
 
       localStorage.setItem("user", JSON.stringify(userDetails));

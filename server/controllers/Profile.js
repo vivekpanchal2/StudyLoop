@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const { uploadImageToCloudinary } = require("../utils/imageUpload");
+const courseModel = require("../models/courseModel");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -9,12 +10,10 @@ exports.updateProfile = async (req, res) => {
 
     const id = req.user.id;
 
-    // Find the profile by id
     const userDetails = await User.findById(id).populate("additionalDetails");
     console.log(userDetails);
     const profile = await Profile.findById(userDetails.additionalDetails._id);
 
-    // Update the profile fields
     if (userDetails) {
       userDetails.firstName = firstName || userDetails.firstName;
       userDetails.lastName = lastName || userDetails.lastName;
@@ -60,7 +59,6 @@ exports.deleteAccount = async (req, res) => {
         message: "User not found",
       });
     }
-    //delete course : Empty
     await Profile.findByIdAndDelete(userDeatails.additionalDetails);
     await User.findByIdAndDelete(userId);
 
@@ -151,7 +149,6 @@ exports.getEnrolledCourses = async (req, res) => {
       })
       .populate("courseProgress")
       .exec();
-    // console.log(enrolledCourses);
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
@@ -168,10 +165,12 @@ exports.getEnrolledCourses = async (req, res) => {
 exports.instructorDashboard = async (req, res) => {
   try {
     const id = req.user.id;
-    const courseData = await Course.find({ instructor: id });
+
+    const courseData = await courseModel.find({ instructor: id });
     const courseDetails = courseData.map((course) => {
-      totalStudents = course?.studentsEnrolled?.length;
+      totalStudents = course?.studentsEnrolled?.length || 0;
       totalRevenue = course?.price * totalStudents;
+
       const courseStats = {
         _id: course._id,
         courseName: course.courseName,

@@ -11,7 +11,6 @@ const {
 } = require("../mails/templates/paymentSuccessEmail");
 const CourseProgress = require("../models/courseProgressModel");
 
-// Capture the payment and initiate the Stripe Payment Intent
 exports.capturePayment = async (req, res) => {
   const { courses } = req.body;
   const userId = req.user.id;
@@ -128,7 +127,6 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
   }
 };
 
-// Enroll the student in the courses
 const enrollStudents = async (courses, userId, res) => {
   if (!courses || !userId) {
     return res.status(400).json({

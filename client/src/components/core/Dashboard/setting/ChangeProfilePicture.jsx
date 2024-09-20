@@ -51,8 +51,7 @@ export default function ChangeProfilePicture() {
       const formData = new FormData();
       formData.append("displayPicture", imageFile);
 
-      // This will now wait for the dispatch to complete
-      await dispatch(updateDisplayPicture(token, formData));
+      dispatch(updateDisplayPicture(token, formData));
 
       setLoading(false);
       console.log("File uploaded successfully");

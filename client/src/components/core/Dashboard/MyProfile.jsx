@@ -9,8 +9,6 @@ export default function MyProfile() {
   const { user } = useSelector((state) => state.profile);
   const navigate = useNavigate();
 
-  console.log("the fuckinf one", user);
-
   return (
     <>
       <h1 className="mb-14 text-3xl font-bold text-richblack-5">My Profile</h1>

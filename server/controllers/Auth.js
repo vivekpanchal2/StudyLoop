@@ -7,9 +7,9 @@ const jwt = require("jsonwebtoken");
 const { passwordUpdated } = require("../mails/templates/passwordUpdate");
 const crypto = require("crypto");
 const { mailSender } = require("../utils/mailSender");
+const profileModel = require("../models/profileModel");
 require("dotenv").config();
 
-//generate otp
 exports.sendOtp = async (req, res) => {
   try {
     const email = req.body.email;
@@ -24,7 +24,6 @@ exports.sendOtp = async (req, res) => {
         .json({ success: false, message: "user already exists" });
     }
 
-    //for generate a unique otp
     let otp, otpExists;
     do {
       otp = otpGenerator.generate(6, {
@@ -50,8 +49,6 @@ exports.sendOtp = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-//signup page
 
 exports.signUp = async (req, res) => {
   try {
@@ -93,7 +90,6 @@ exports.signUp = async (req, res) => {
         .json({ success: false, message: "User alredy exists" });
     }
 
-    // find recent otp - because there can be mulltiple otp on one email
     const recentOtp = await OTP.find({ email })
       .sort({ createdAt: -1 })
       .limit(1);
@@ -128,10 +124,38 @@ exports.signUp = async (req, res) => {
       image: `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=random`,
     });
 
-    res.status(200).json({
+    const additionalDetail = await profileModel.findById(profileDetails._id);
+
+    const userWithDetails = {
+      ...user.toObject(),
+      additionalDetails: additionalDetail,
+    };
+
+    const payload = {
+      email: user.email,
+      id: user._id,
+      accountType: user.accountType,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+
+    console.log(token);
+
+    user.token = token;
+    user.password = undefined;
+
+    const options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+
+    res.cookie("token", token, options).status(200).json({
       success: true,
       message: "User registered successfully",
-      user,
+      token,
+      userWithDetails,
     });
   } catch (error) {
     console.log(error);
@@ -206,26 +230,21 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    // Get user data from req.user
     const userDetails = await User.findById(req.user.id);
 
-    // Get old password, new password, and confirm new password from req.body
     const { oldPassword, newPassword } = req.body;
 
-    // Validate old password
     const isPasswordMatch = await bcrypt.compare(
       oldPassword,
       userDetails.password
     );
 
     if (!isPasswordMatch) {
-      // If old password does not match, return a 401 (Unauthorized) error
       return res
         .status(401)
         .json({ success: false, message: "The password is incorrect" });
     }
 
-    // Update password
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
     const updatedUserDetails = await User.findByIdAndUpdate(
       req.user.id,
@@ -233,7 +252,6 @@ exports.changePassword = async (req, res) => {
       { new: true }
     );
 
-    // Send notification email
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,
@@ -245,7 +263,6 @@ exports.changePassword = async (req, res) => {
       );
       console.log("Email sent successfully:", emailResponse.response);
     } catch (error) {
-      // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
       console.error("Error occurred while sending email:", error);
       return res.status(500).json({
         success: false,
@@ -254,12 +271,10 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Return success response
     return res
       .status(200)
       .json({ success: true, message: "Password updated successfully" });
   } catch (error) {
-    // If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
     console.error("Error occurred while updating password:", error);
     return res.status(500).json({
       success: false,

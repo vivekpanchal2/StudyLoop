@@ -28,7 +28,6 @@ function Navbar() {
       setLoading(true);
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API);
-        // console.log("res:", res);
         if (res !== null) {
           setSubLinks(res.data.data);
         }

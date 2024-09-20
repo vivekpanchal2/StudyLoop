@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import FoundingStory from "../assets/Images/FoundingStory.png";
 import BannerImage1 from "../assets/Images/aboutus1.webp";
 import BannerImage2 from "../assets/Images/aboutus2.webp";
 import BannerImage3 from "../assets/Images/aboutus3.webp";
@@ -9,7 +8,6 @@ import logo from "../assets/Logo/Logo-studyLoop.png";
 import { TypeAnimation } from "react-type-animation";
 
 import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
-import LearningGrid from "../components/core/AboutPage/LearningGrid";
 import Quote from "../components/core/AboutPage/Quote";
 import StatsComponenet from "../components/core/AboutPage/Stats";
 import HighlightText from "../components/core/HomePage/HighlightText";
@@ -158,11 +156,6 @@ const About = () => {
           </div>
         </div>
       </div>
-
-      <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
-        {/* <LearningGrid /> */}
-        <ContactFormSection />
-      </section>
 
       {/* <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white"> */}
       {/* Reviws from Other Learner */}

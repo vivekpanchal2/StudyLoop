@@ -17,6 +17,6 @@ exports.uploadImageToCloudinary = async (file, folder, height, quality) => {
     return result;
   } catch (error) {
     console.error("Error uploading image to Cloudinary:", error.message);
-    throw error; // Rethrow the error after logging it
+    throw error;
   }
 };

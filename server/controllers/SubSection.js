@@ -4,22 +4,30 @@ const Section = require("../models/sectionModel");
 const SubSection = require("../models/subSectionModel");
 
 exports.createSubSection = async (req, res) => {
+  console.log("sub section server side 1");
   try {
     const { sectionId, title, description, timeDuration } = req.body;
 
-    if (!sectionId || !title || !timeDuration || !description) {
+    console.log(sectionId, title, description, timeDuration);
+
+    if (!sectionId || !title || !description) {
       return res.status(400).json({
         success: false,
         message: "Missing properties",
       });
     }
 
+    console.log("now", req.files);
+
     const video = req.files.videoFile;
+
+    console.log(video);
 
     const uploadVideoDetails = await uploadImageToCloudinary(
       video,
       process.env.FOLDER_NAME
     );
+    console.log("sub section server side 2");
 
     console.log(uploadVideoDetails);
 
@@ -29,8 +37,8 @@ exports.createSubSection = async (req, res) => {
       description,
       videoUrl: uploadVideoDetails.secure_url,
     });
+    console.log("sub section server side 3", subSectionDetails);
 
-    //update Section
 
     const updatedSection = await Section.findByIdAndUpdate(
       {
@@ -43,6 +51,8 @@ exports.createSubSection = async (req, res) => {
       },
       { new: true }
     ).populate("subSection");
+
+    console.log(updatedSection);
 
     return res.status(200).json({
       success: true,
@@ -99,7 +109,6 @@ exports.updateSubSection = async (req, res) => {
       subSectionDetails.videoUrl = uploadVideoDetails.secure_url;
       subSectionDetails.timeDuration = `${uploadVideoDetails.duration}`;
     }
-    console.log("Yaha tak ka complete hai iske baad chuda hai");
 
     await subSectionDetails.save();
 

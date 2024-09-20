@@ -22,7 +22,7 @@ async function sendVerificationEmail(email, otp) {
   try {
     const mailResponse = await mailSender(
       email,
-      "Verification Email From SkillNest",
+      "Verification Email From StudyLoop",
       emailTemplate(otp)
     );
 

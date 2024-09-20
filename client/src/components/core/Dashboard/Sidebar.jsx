@@ -16,7 +16,6 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // to keep track of confirmation modal
   const [confirmationModal, setConfirmationModal] = useState(null);
 
   if (profileLoading || authLoading) {

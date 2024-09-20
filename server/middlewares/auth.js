@@ -17,12 +17,8 @@ exports.auth = async (req, res, next) => {
       });
     }
 
-    //verify the token
-
     try {
-      console.log("Kya ye chal raha hai");
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
       req.user = decode;
     } catch (error) {
       return res.status(401).json({
@@ -31,18 +27,16 @@ exports.auth = async (req, res, next) => {
       });
     }
 
-    console.log("yaha pr aaya tha 5");
-
     next();
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Something went wrong while validating Token     ",
+      message: "Something went wrong while validating Token",
     });
   }
 };
 
-//isStudent
+//------------------- Student -------------------
 
 exports.isStudent = (req, res, next) => {
   try {
@@ -63,7 +57,8 @@ exports.isStudent = (req, res, next) => {
   }
 };
 
-//isInstructor
+//------------------- Instructor -------------------
+
 exports.isInstructor = (req, res, next) => {
   try {
     const accountType = req.user.accountType;
@@ -83,7 +78,8 @@ exports.isInstructor = (req, res, next) => {
   }
 };
 
-//Admin
+//------------------- Admin -------------------
+
 exports.isAdmin = (req, res, next) => {
   try {
     const accountType = req.user.accountType;

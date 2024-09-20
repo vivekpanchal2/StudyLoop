@@ -10,7 +10,6 @@ const Stats = [
 const StatsComponenet = () => {
   return (
     <div className="bg-richblack-700">
-      {/* Stats */}
 
       <div className="flex flex-col items-center text-white text-center py-10">
         <div className="text-5xl font-semibold  font-inter mb-4">
