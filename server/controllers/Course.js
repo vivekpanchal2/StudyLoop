@@ -127,7 +127,7 @@ exports.showAllCourse = async (req, res) => {
         whatYouWillLearn: true,
         price: true,
         ratingAndReview: true,
-        studentEnrolled: true,
+        studentsEnrolled: true,
       }
     )
       .populate("instructor")
@@ -151,12 +151,20 @@ exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
     console.log(courseId);
-    const courseDetails = await Course.findById(courseId).populate({
-      path: "courseContent",
-      populate: {
-        path: "subSection",
-      },
-    });
+
+    const courseDetails = await Course.findById(courseId)
+      .populate({ path: "instructor", populate: { path: "additionalDetails" } })
+      .populate("category")
+      .populate({
+        path: "ratingAndReview",
+        populate: {
+          path: "user",
+          select: "firstName lastName accountType image",
+        },
+      })
+      .populate({ path: "courseContent", populate: { path: "subSection" } })
+      .exec();
+
     return res.status(200).json({
       success: true,
       message: "Course details fetched succsessfully",
@@ -327,6 +335,8 @@ exports.getFullCourseDetails = async (req, res) => {
     const { courseId } = req.body;
     const userId = req.user.id;
 
+    console.log("Flagggggg");
+
     const courseDetails = await Course.findOne({
       _id: courseId,
     })
@@ -346,8 +356,12 @@ exports.getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
+    console.log("------------------------------------------------------------");
+    console.log(courseDetails);
+    console.log("------------------------------------------------------------");
+
     let courseProgressCount = await CourseProgress.findOne({
-      courseID: courseId,
+      courseId: courseId,
       userId: userId,
     });
 
@@ -360,13 +374,6 @@ exports.getFullCourseDetails = async (req, res) => {
       });
     }
 
-    // if (courseDetails.status === "Draft") {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: `Accessing a draft course is forbidden`,
-    //   });
-    // }
-
     let totalDurationInSeconds = 0;
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
@@ -376,6 +383,7 @@ exports.getFullCourseDetails = async (req, res) => {
     });
 
     const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+    console.log({ courseDetails, totalDuration, courseProgressCount });
 
     return res.status(200).json({
       success: true,

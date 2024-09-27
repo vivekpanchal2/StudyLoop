@@ -9,12 +9,15 @@ import {
   createSection,
   updateSection,
 } from "../../../../../services/operations/courseDetailsAPI";
+
 import {
   setCourse,
   setEditCourse,
   setStep,
 } from "../../../../../slices/courseSlice";
+
 import IconBtn from "../../../../common/IconBtn";
+
 import NestedView from "./NestedView";
 
 export default function CourseBuilderForm() {

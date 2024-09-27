@@ -1,4 +1,3 @@
-const categoryModel = require("../models/categoryModel");
 const Category = require("../models/categoryModel");
 
 function getRandomInt(max) {
@@ -58,8 +57,7 @@ exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
     console.log("PRINTING CATEGORY ID: ", categoryId);
-    const selectedCategory = await categoryModel
-      .findById(categoryId)
+    const selectedCategory = await Category.findById(categoryId)
       .populate({
         path: "courses",
         match: { status: "Published" },
@@ -100,7 +98,7 @@ exports.categoryPageDetails = async (req, res) => {
       })
       .exec();
 
-    const allCategories = await categoryModel.find().populate({
+    const allCategories = await Category.find().populate({
       path: "courses",
       match: { status: "Published" },
       populate: [{ path: "instructor" }, { path: "ratingAndReview" }],
@@ -122,6 +120,36 @@ exports.categoryPageDetails = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteCategory = async (req, res) => {
+  try {
+    // extract data
+    const { categoryId } = req.body;
+
+    // validation
+    if (!categoryId) {
+      return res.status(400).json({
+        success: false,
+        message: "categoryId is required",
+      });
+    }
+
+    await Category.findByIdAndDelete(categoryId);
+
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    console.log("Error while deleting Category");
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error while deleting Category",
       error: error.message,
     });
   }

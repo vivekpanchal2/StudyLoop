@@ -12,6 +12,7 @@ import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { ACCOUNT_TYPE } from "../../utils/constants";
 import ProfileDropdown from "../core/Auth/ProfileDropDown";
+import MobileProfileDropDown from "../core/Auth/MobileProfileDropDown";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
@@ -54,8 +55,6 @@ function Navbar() {
         <Link to="/">
           <img src={logo} alt="Logo" width={160} height={32} loading="lazy" />
         </Link>
-
-        {/* Navigation links */}
 
         <nav className="hidden md:block">
           <ul className="flex gap-x-6 text-richblack-25">
@@ -115,8 +114,6 @@ function Navbar() {
           </ul>
         </nav>
 
-        {/* Login / Signup / Dashboard */}
-
         <div className="flex-row gap-5 hidden md:flex items-center">
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to="/dashboard/cart" className="relative">
@@ -146,7 +143,7 @@ function Navbar() {
         </div>
 
         <button className="mr-4 md:hidden">
-          <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+          <MobileProfileDropDown />
         </button>
       </div>
     </div>

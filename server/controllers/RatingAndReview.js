@@ -1,21 +1,21 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, connect } = require("mongoose");
 const Course = require("../models/courseModel");
 const RatingAndReview = require("../models/ratingAndReviewModel");
 
 exports.createRating = async (req, res) => {
   try {
-    const userId = req.user;
+    const userId = req.user.id; // Use req.user.id if it's the ObjectId field in your user schema
     const { courseId, rating, review } = req.body;
 
     const courseDetails = await Course.findOne({
       _id: courseId,
-      studentEnrolled: { $elemMatch: { $eq: userId } },
+      studentsEnrolled: { $elemMatch: { $eq: userId } },
     });
-    console.log(courseDetails);
+
     if (!courseDetails) {
       return res.status(404).json({
         success: false,
-        message: "Student is not enrolled in course",
+        message: "Student is not enrolled in the course",
       });
     }
 
@@ -27,12 +27,14 @@ exports.createRating = async (req, res) => {
     if (alreadyReviewed.length > 0) {
       return res.status(403).json({
         success: false,
-        message: "Course is already reviewed by the user",
+        message: "Course is already reviewed",
       });
     }
 
+    // Create the Rating and Review with the course field included
     const ratingReview = await RatingAndReview.create({
       user: userId,
+      course: courseId, // Add the course field here
       rating,
       review,
     });
@@ -46,8 +48,6 @@ exports.createRating = async (req, res) => {
       },
       { new: true }
     );
-
-    console.log(updatedCourseDetails);
 
     return res.status(200).json({
       success: true,
@@ -123,6 +123,7 @@ exports.getAllRating = async (req, res) => {
         select: "courseName",
       });
 
+    console.log(allReviews);
     res.status(200).json({
       success: true,
       message: "All review fetched successfully",

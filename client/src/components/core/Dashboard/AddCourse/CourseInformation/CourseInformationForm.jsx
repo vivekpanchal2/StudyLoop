@@ -38,14 +38,11 @@ export default function CourseInformationForm() {
       setLoading(true);
       const categories = await fetchCourseCategories();
       if (categories.length > 0) {
-        // console.log("categories", categories)
         setCourseCategories(categories);
       }
       setLoading(false);
     };
-    // if form is in edit mode
     if (editCourse) {
-      // console.log("data populated", editCourse)
       setValue("courseTitle", course.courseName);
       setValue("courseShortDesc", course.courseDescription);
       setValue("coursePrice", course.price);
@@ -56,8 +53,6 @@ export default function CourseInformationForm() {
       setValue("courseImage", course.thumbnail);
     }
     getCategories();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFormUpdated = () => {
@@ -141,7 +136,6 @@ export default function CourseInformationForm() {
     setLoading(true);
 
     const result = await addCourseDetails(formData, token);
-    console.log("Add Course Result:", result);
     if (result) {
       console.log("Step is being updated to 2");
 

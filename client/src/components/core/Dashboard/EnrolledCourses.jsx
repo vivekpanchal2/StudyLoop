@@ -13,11 +13,14 @@ export default function EnrolledCourses() {
     try {
       const res = await getUserEnrolledCourses(token);
 
+      console.log({ res });
       setEnrolledCourses(res);
     } catch (error) {
       console.log("Could not fetch enrolled courses.");
     }
   };
+
+  console.log(enrolledCourses);
 
   useEffect(() => {
     getEnrolledCourses();

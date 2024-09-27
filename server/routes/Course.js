@@ -14,6 +14,7 @@ const {
 const {
   showAllCategories,
   createCategory,
+  deleteCategory,
   categoryPageDetails,
 } = require("../controllers/Category");
 
@@ -35,7 +36,7 @@ const {
   getAllRating,
 } = require("../controllers/RatingAndReview");
 
-// const { updateCourseProgress } = require("../controllers/courseProgress");
+const { updateCourseProgress } = require("../controllers/courseProgress.js");
 
 const {
   auth,
@@ -43,7 +44,6 @@ const {
   isStudent,
   isAdmin,
 } = require("../middlewares/auth");
-
 
 router.post("/createCourse", auth, isInstructor, createCourse);
 router.post("/addSection", auth, isInstructor, createSection);
@@ -59,14 +59,13 @@ router.post("/editCourse", auth, isInstructor, editCourse);
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
 router.delete("/deleteCourse", deleteCourse);
 
-// router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
-
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 router.post("/createCategory", auth, isAdmin, createCategory);
+router.delete("/deleteCategory", auth, isAdmin, deleteCategory);
+
 router.get("/showAllCategories", showAllCategories);
 router.post("/getCategoryPageDetails", categoryPageDetails);
-
-//----------------------------------------------------------
 
 router.post("/createRating", auth, isStudent, createRating);
 router.get("/getAverageRating", getAverageRating);

@@ -24,7 +24,6 @@ export default function ChangeProfilePicture() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    // console.log(file)
     if (file) {
       setImageFile(file);
       previewFile(file);
@@ -54,7 +53,6 @@ export default function ChangeProfilePicture() {
       dispatch(updateDisplayPicture(token, formData));
 
       setLoading(false);
-      console.log("File uploaded successfully");
     } catch (error) {
       console.log("ERROR MESSAGE -", error.message);
       setLoading(false);

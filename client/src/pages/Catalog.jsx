@@ -18,27 +18,20 @@ const Catalog = () => {
   const [categoryId, setCategoryId] = useState("");
   const dispatch = useDispatch();
 
-  console.log({ catalogName });
-
   useEffect(() => {
     const getCategories = async () => {
       const res = await apiConnector("GET", categories.CATEGORIES_API);
-      console.log({ res });
       const filteredCategories = res?.data?.data?.filter(
         (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
       );
 
-      console.log({ filteredCategories });
       const category_id =
         filteredCategories.length > 0 ? filteredCategories[0]._id : undefined;
 
-      console.log({ category_id });
       setCategoryId(category_id);
     };
     getCategories();
   }, [catalogName]);
-
-  console.log({ categoryId });
 
   useEffect(() => {
     const getCategoryDetails = async () => {
@@ -54,8 +47,6 @@ const Catalog = () => {
       getCategoryDetails();
     }
   }, [categoryId]);
-
-  console.log({ catalogPageData });
 
   if (loading || !catalogPageData) {
     return (
