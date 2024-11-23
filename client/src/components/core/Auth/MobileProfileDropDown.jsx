@@ -14,28 +14,17 @@ import { TbMessage2Plus } from "react-icons/tb";
 import { PiNotebook } from "react-icons/pi";
 import { fetchCourseCategories } from "./../../../services/operations/courseDetailsAPI";
 
-// const CatalogDropDown = ({ subLinks }) => {
-//     if (!subLinks) return
-
-//     return (
-//         <div>
-
-//         </div>
-//     )
-// }
-
 export default function MobileProfileDropDown() {
-  const dispatch = useDispatch(); // Must be moved outside of conditional
-  const navigate = useNavigate(); // Must be moved outside of conditional
-  const ref = useRef(null); // Must be moved outside of conditional
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const ref = useRef(null);
 
-  const [open, setOpen] = useState(false); // Must be moved outside of conditional
-  const [subLinks, setSubLinks] = useState([]); // Must be moved outside of conditional
-  const [loading, setLoading] = useState(false); // Must be moved outside of conditional
+  const [open, setOpen] = useState(false);
+  const [subLinks, setSubLinks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => state.profile);
 
-  // Call the custom hook outside the condition
   useOnClickOutside(ref, () => setOpen(false));
 
   const fetchSublinks = async () => {
@@ -49,12 +38,10 @@ export default function MobileProfileDropDown() {
     setLoading(false);
   };
 
-  // Fetch sublinks once the component mounts
   useEffect(() => {
     fetchSublinks();
   }, []);
 
-  // Return null conditionally here to avoid rendering
   if (!user) return null;
 
   return (

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import HighlightText from "../components/core/HomePage/HighlightText";
 import CTAbutton from "../components/core/HomePage/CTAbutton";
-import Banner from "../assets/Images/homeBanner.png";
 import CodeBlocks from "../components/core/HomePage/CodeBlocks";
 import TimelineSection from "../components/core/HomePage/TimelineSection";
 import Footer from "../components/common/Footer.jsx";
@@ -69,7 +68,7 @@ function Home() {
           </div>
           <div className="lg:w-[40%] flex justify-center items-center px-4 lg:px-0">
             <img
-              src={Banner}
+              src={"https://i.ibb.co/Dpr0zX8/homepage-Banner-1.png"}
               alt="StudyLoop Banner"
               className="lg:w-full w-[70%]   h-auto"
             />

@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 4000;
 app.use(
   cors({
     origin: "*",
-    credentials: true, // Your frontend origin
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -50,15 +50,6 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
-
-//def route
-
-app.get("/", (req, res) => {
-  return res.json({
-    success: true,
-    message: "Your server is up and running....",
-  });
-});
 
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);

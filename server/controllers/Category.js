@@ -20,7 +20,6 @@ exports.createCategory = async (req, res) => {
       description,
     });
 
-    console.log(categoryDetails);
     return res.status(200).json({
       success: true,
       message: "Category Created Successfully",
@@ -56,7 +55,6 @@ exports.showAllCategories = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
-    console.log("PRINTING CATEGORY ID: ", categoryId);
     const selectedCategory = await Category.findById(categoryId)
       .populate({
         path: "courses",
@@ -64,16 +62,12 @@ exports.categoryPageDetails = async (req, res) => {
         populate: [{ path: "instructor" }, { path: "ratingAndReview" }],
       })
       .exec();
-    // console.log(selectedCategory);
 
     if (!selectedCategory) {
-      console.log("Category not found.");
       return res
         .status(404)
         .json({ success: false, message: "Category not found" });
     }
-
-    console.log(selectedCategory);
 
     if (selectedCategory.courses.length === 0) {
       console.log("No courses found for the selected category.");
@@ -127,10 +121,8 @@ exports.categoryPageDetails = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
   try {
-    // extract data
     const { categoryId } = req.body;
 
-    // validation
     if (!categoryId) {
       return res.status(400).json({
         success: false,

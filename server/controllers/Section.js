@@ -1,4 +1,3 @@
-const { populate } = require("dotenv");
 const Course = require("../models/courseModel");
 const Section = require("../models/sectionModel");
 const subSection = require("../models/subSectionModel");
@@ -6,8 +5,6 @@ const subSection = require("../models/subSectionModel");
 exports.createSection = async (req, res) => {
   try {
     const { sectionName, courseId } = req.body;
-
-    console.log("courseId:", courseId);
 
     if (!courseId || !sectionName) {
       return res.status(400).json({
@@ -17,8 +14,6 @@ exports.createSection = async (req, res) => {
     }
 
     const newSection = await Section.create({ sectionName });
-
-    console.log("Section ", newSection);
 
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
@@ -43,7 +38,6 @@ exports.createSection = async (req, res) => {
       updatedCourse,
     });
   } catch (error) {
-    // Handle errors
     res.status(500).json({
       success: false,
       message: "Internal server error",

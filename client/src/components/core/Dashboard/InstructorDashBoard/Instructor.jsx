@@ -18,6 +18,9 @@ export default function Instructor() {
       const instructorApiData = await getInstructorData(token);
       const result = await fetchInstructorCourses(token);
 
+      console.log({ instructorApiData });
+      console.log({ result });
+
       if (instructorApiData?.length) setInstructorData(instructorApiData);
       if (result) {
         setCourses(result);
@@ -26,16 +29,17 @@ export default function Instructor() {
     })();
   }, []);
 
+  const totalAmount = instructorData?.reduce((acc, curr) => {
+    const amount = Number(curr.totalRevenue) || 0;
+    return acc + amount;
+  }, 0);
 
-  const totalAmount = instructorData?.reduce(
-    (acc, curr) => acc + curr.totalAmountGenerated,
-    0
-  );
+  const totalStudents = instructorData?.reduce((acc, curr) => {
+    const students = Number(curr.totalStudents) || 0;
+    return acc + students;
+  }, 0);
 
-  const totalStudents = instructorData?.reduce(
-    (acc, curr) => acc + curr.totalStudentsEnrolled,
-    0
-  );
+  console.log({ instructorData, totalAmount, totalStudents });
 
   return (
     <div>

@@ -4,19 +4,20 @@ import { NavLink, matchPath, useLocation } from "react-router-dom";
 
 import { resetCourseState } from "../../../slices/courseSlice";
 
-export default function SidebarLink({ link, iconName }) {
+export default function SidebarLink({ link, iconName, onClose }) {
   const Icon = Icons[iconName];
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const matchRoute = (route) => {
-    return matchPath({ path: route }, location.pathname);
-  };
+  const matchRoute = (route) => matchPath({ path: route }, location.pathname);
 
   return (
     <NavLink
       to={link.path}
-      onClick={() => dispatch(resetCourseState())}
+      onClick={() => {
+        dispatch(resetCourseState());
+        if (onClose) onClose(); // Close sidebar on tab click
+      }}
       className={`relative px-8 py-2 text-sm font-medium ${
         matchRoute(link.path)
           ? "bg-yellow-800 text-yellow-50"
@@ -29,7 +30,6 @@ export default function SidebarLink({ link, iconName }) {
         }`}
       ></span>
       <div className="flex items-center gap-x-2">
-        {/* Icon Goes Here */}
         <Icon className="text-lg" />
         <span>{link.name}</span>
       </div>

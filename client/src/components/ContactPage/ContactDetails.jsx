@@ -14,8 +14,7 @@ const contactDetailsData = [
     icon: "BiWorld",
     heading: "Visit us",
     description: "Come and say hello at our office HQ.",
-    details:
-      "Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Bangalore-560016",
+    details: "ViratNagar, Ahmedabad-382415 ",
   },
   {
     icon: "IoCall",

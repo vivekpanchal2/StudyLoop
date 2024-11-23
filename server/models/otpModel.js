@@ -25,8 +25,6 @@ async function sendVerificationEmail(email, otp) {
       "Verification Email From StudyLoop",
       emailTemplate(otp)
     );
-
-    console.log("Mail send successfully ", mailResponse);
   } catch (err) {
     console.error("Error occures while sending mails", err);
     throw err;
@@ -34,8 +32,6 @@ async function sendVerificationEmail(email, otp) {
 }
 
 OTPSchema.pre("save", async function (next) {
-  console.log("New document saved to database");
-
   if (this.isNew) {
     await sendVerificationEmail(this.email, this.otp);
   }

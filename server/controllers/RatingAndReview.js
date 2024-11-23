@@ -4,7 +4,7 @@ const RatingAndReview = require("../models/ratingAndReviewModel");
 
 exports.createRating = async (req, res) => {
   try {
-    const userId = req.user.id; // Use req.user.id if it's the ObjectId field in your user schema
+    const userId = req.user.id;
     const { courseId, rating, review } = req.body;
 
     const courseDetails = await Course.findOne({
@@ -31,10 +31,9 @@ exports.createRating = async (req, res) => {
       });
     }
 
-    // Create the Rating and Review with the course field included
     const ratingReview = await RatingAndReview.create({
       user: userId,
-      course: courseId, // Add the course field here
+      course: courseId,
       rating,
       review,
     });
@@ -116,14 +115,13 @@ exports.getAllRating = async (req, res) => {
       .sort({ rating: "desc" })
       .populate({
         path: "user",
-        select: "firstname lastname email image",
+        select: "firstName lastName email image",
       })
       .populate({
         path: "course",
         select: "courseName",
       });
 
-    console.log(allReviews);
     res.status(200).json({
       success: true,
       message: "All review fetched successfully",

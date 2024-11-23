@@ -12,8 +12,6 @@ exports.mailSender = async (email, title, body) => {
       },
     });
 
-    // console.log("Transport: ", transporter);
-
     let info = await transporter.sendMail({
       from: `"StudyLoop" <thecodingloop@gmail.com> `,
       to: `${email}`,

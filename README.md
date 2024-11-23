@@ -1,6 +1,6 @@
-# StudyNotion - EdTech Platform 🚀
+# StudyLoop - EdTech Platform 🚀
 
-**StudyNotion** is a fully functional EdTech platform built using the MERN stack (MongoDB, Express, React, Node). It allows users to create, consume, and rate educational content, providing a seamless and interactive experience for both students and instructors.
+**StudyLoop** is a fully functional EdTech platform built using the MERN stack (MongoDB, Express, React, Node). It allows users to create, consume, and rate educational content, providing a seamless and interactive experience for both students and instructors.
 
 ## Features 🎨
 

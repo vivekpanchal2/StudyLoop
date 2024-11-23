@@ -39,18 +39,15 @@ function ReviewSlider() {
     <div className="text-white">
       <div className="my-[50px] h-[184px] max-w-maxContentTab lg:max-w-maxContent">
         <Swiper
-          // slidesPerView={4}
-          // slidesPerView={1}
           breakpoints={{
-            // Configure the number of slides per view for different screen sizes
             640: {
-              slidesPerView: 1, // Show 1 slide at a time on smaller screens
+              slidesPerView: 1,
             },
             768: {
-              slidesPerView: 2, // Show 2 slides at a time on screens wider than 768px
+              slidesPerView: 2,
             },
             1024: {
-              slidesPerView: 4, // Show 4 slides at a time on screens wider than 1024px
+              slidesPerView: 4,
             },
           }}
           spaceBetween={25}
@@ -60,7 +57,6 @@ function ReviewSlider() {
             delay: 2500,
             disableOnInteraction: false,
           }}
-          // modules={[FreeMode, Pagination, Autoplay]}
           className="w-full "
         >
           {reviews.map((review, i) => {

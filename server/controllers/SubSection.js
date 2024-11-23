@@ -4,11 +4,8 @@ const Section = require("../models/sectionModel");
 const SubSection = require("../models/subSectionModel");
 
 exports.createSubSection = async (req, res) => {
-  console.log("sub section server side 1");
   try {
     const { sectionId, title, description, timeDuration } = req.body;
-
-    console.log(sectionId, title, description, timeDuration);
 
     if (!sectionId || !title || !description) {
       return res.status(400).json({
@@ -17,19 +14,12 @@ exports.createSubSection = async (req, res) => {
       });
     }
 
-    console.log("now", req.files);
-
     const video = req.files.videoFile;
-
-    console.log(video);
 
     const uploadVideoDetails = await uploadImageToCloudinary(
       video,
       process.env.FOLDER_NAME
     );
-    console.log("sub section server side 2");
-
-    console.log(uploadVideoDetails);
 
     const subSectionDetails = await SubSection.create({
       title,
@@ -37,8 +27,6 @@ exports.createSubSection = async (req, res) => {
       description,
       videoUrl: uploadVideoDetails.secure_url,
     });
-    console.log("sub section server side 3", subSectionDetails);
-
 
     const updatedSection = await Section.findByIdAndUpdate(
       {
@@ -51,8 +39,6 @@ exports.createSubSection = async (req, res) => {
       },
       { new: true }
     ).populate("subSection");
-
-    console.log(updatedSection);
 
     return res.status(200).json({
       success: true,
@@ -72,8 +58,6 @@ exports.createSubSection = async (req, res) => {
 exports.updateSubSection = async (req, res) => {
   try {
     const { title, subSectionId, sectionId, description } = req.body;
-
-    console.log({ title, subSectionId, sectionId, description });
 
     if (!subSectionId || !title || !sectionId || !description) {
       return res.status(400).json({
@@ -115,8 +99,6 @@ exports.updateSubSection = async (req, res) => {
     const updatedSection = await Section.findById(sectionId).populate(
       "subSection"
     );
-
-    console.log("updated section", updatedSection);
 
     return res.json({
       success: true,

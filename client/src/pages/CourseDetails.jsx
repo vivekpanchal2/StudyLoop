@@ -32,7 +32,6 @@ function CourseDetails() {
 
   const { courseId } = useParams();
 
-  // Declear a state to save the course details
   const [response, setResponse] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
 

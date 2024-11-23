@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-const Section = require("../models/sectionModel");
 const SubSection = require("../models/subSectionModel");
 const CourseProgress = require("../models/courseProgressModel");
 
@@ -14,14 +12,10 @@ exports.updateCourseProgress = async (req, res) => {
       return res.status(404).json({ error: "Invalid subsection" });
     }
 
-    console.log({ courseId, userId });
-
     let courseProgress = await CourseProgress.findOne({
       courseId: courseId,
       userId: userId,
     });
-
-    console.log(courseProgress);
 
     if (!courseProgress) {
       return res.status(404).json({

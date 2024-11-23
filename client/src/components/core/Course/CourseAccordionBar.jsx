@@ -5,7 +5,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 export default function CourseAccordionBar({ course, isActive, handleActive }) {
   const contentEl = useRef(null);
-  const [active, setActive] = useState(false); // Accordian state
+  const [active, setActive] = useState(false);
   const [sectionHeight, setSectionHeight] = useState(0);
 
   useEffect(() => {

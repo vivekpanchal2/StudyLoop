@@ -90,8 +90,6 @@ exports.createCourse = async (req, res) => {
       { new: true }
     );
 
-    // update categorySchema
-
     await Category.findByIdAndUpdate(
       category,
       {
@@ -150,7 +148,6 @@ exports.showAllCourse = async (req, res) => {
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
-    console.log(courseId);
 
     const courseDetails = await Course.findById(courseId)
       .populate({ path: "instructor", populate: { path: "additionalDetails" } })
@@ -183,9 +180,6 @@ exports.editCourse = async (req, res) => {
     const { courseId } = req.body;
     const updates = req.body;
 
-    console.log(courseId);
-    console.log(req.params);
-
     const course = await Course.findById(courseId);
 
     if (!course) {
@@ -193,7 +187,6 @@ exports.editCourse = async (req, res) => {
     }
 
     if (req.files) {
-      console.log("thumbnail update");
       const thumbnail = req.files.thumbnailImage;
       const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,
@@ -224,7 +217,6 @@ exports.editCourse = async (req, res) => {
         },
       })
       .populate("category")
-      // .populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
@@ -271,21 +263,14 @@ exports.getInstructorCourses = async (req, res) => {
 };
 
 exports.deleteCourse = async (req, res) => {
-  console.log("check pointzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-
   try {
     const { courseId } = req.body;
 
-    console.log("req.body", req.body);
-    console.log(courseId);
     const course = await Course.findById(courseId);
 
-    console.log(course);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-
-    console.log("check point one");
 
     // student field is not working rn
     // Unenroll students from the course
@@ -295,8 +280,6 @@ exports.deleteCourse = async (req, res) => {
     //     $pull: { courses: courseId },
     //   });
     // }
-
-    console.log("check point two");
 
     const courseSections = course.courseContent;
     for (const sectionId of courseSections) {
@@ -310,11 +293,8 @@ exports.deleteCourse = async (req, res) => {
 
       await Section.findByIdAndDelete(sectionId);
     }
-    console.log("check point three");
 
     await Course.findByIdAndDelete(courseId);
-
-    console.log("check point four");
 
     return res.status(200).json({
       success: true,
@@ -335,8 +315,6 @@ exports.getFullCourseDetails = async (req, res) => {
     const { courseId } = req.body;
     const userId = req.user.id;
 
-    console.log("Flagggggg");
-
     const courseDetails = await Course.findOne({
       _id: courseId,
     })
@@ -356,16 +334,10 @@ exports.getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
-    console.log("------------------------------------------------------------");
-    console.log(courseDetails);
-    console.log("------------------------------------------------------------");
-
     let courseProgressCount = await CourseProgress.findOne({
       courseId: courseId,
       userId: userId,
     });
-
-    console.log("courseProgressCount : ", courseProgressCount);
 
     if (!courseDetails) {
       return res.status(400).json({
@@ -383,7 +355,6 @@ exports.getFullCourseDetails = async (req, res) => {
     });
 
     const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
-    console.log({ courseDetails, totalDuration, courseProgressCount });
 
     return res.status(200).json({
       success: true,

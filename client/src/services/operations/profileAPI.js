@@ -53,7 +53,6 @@ export async function getUserEnrolledCourses(token) {
       }
     );
     console.log("AFTER Calling BACKEND API FOR ENROLLED COURSES");
- 
 
     if (!response.data.success) {
       throw new Error(response.data.message);
@@ -82,7 +81,9 @@ export async function getInstructorData(token) {
     );
 
     console.log("GET_INSTRUCTOR_API_RESPONSE", response);
-    result = response?.data?.courses;
+
+    result = response?.data?.data;
+    console.log({ result });
   } catch (error) {
     console.log("GET_INSTRUCTOR_API ERROR", error);
     toast.error("Could not Get Instructor Data");

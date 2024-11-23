@@ -22,9 +22,3 @@ const Error = () => {
 };
 
 export default Error;
-
-// catalog
-// courseDetails
-// forgot pass
-// view course
-// update password

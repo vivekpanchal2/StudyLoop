@@ -3,7 +3,6 @@ import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { sendOtp } from "../../../services/operations/authAPI";
 import { setSignupData } from "../../../slices/authSlice";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
@@ -13,7 +12,6 @@ function SignupForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // student or instructor
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
   const [formData, setFormData] = useState({

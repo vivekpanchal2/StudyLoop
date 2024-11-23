@@ -11,7 +11,6 @@ import ContactFormSection from "../components/core/AboutPage/ContactFormSection"
 import Quote from "../components/core/AboutPage/Quote";
 import StatsComponenet from "../components/core/AboutPage/Stats";
 import HighlightText from "../components/core/HomePage/HighlightText";
-// import ReviewSlider from "../components/common/ReviewSlider";
 import Footer from "../components/common/Footer";
 
 const About = () => {
@@ -157,15 +156,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white"> */}
-      {/* Reviws from Other Learner */}
-      {/* <h1 className="text-center text-4xl font-semibold mt-8"> */}
-      {/* Reviews from other learners */}
-      {/* </h1> */}
-      {/* <ReviewSlider /> */}
-      {/* <ReviewSlider /> */}
-      {/* </div> */}
-      {/* <Footer /> */}
       <Footer />
     </div>
   );

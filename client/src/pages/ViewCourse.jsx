@@ -34,7 +34,7 @@ export default function ViewCourse() {
       });
       dispatch(setTotalNoOfLectures(lectures));
     })();
-  }, []);
+  }, [courseId, token, dispatch]);
 
   const { courseViewSidebar } = useSelector((state) => state.sidebar);
   const [screenSize, setScreenSize] = useState(undefined);
@@ -45,23 +45,22 @@ export default function ViewCourse() {
     window.addEventListener("resize", handleScreenSize);
     handleScreenSize();
     return () => window.removeEventListener("resize", handleScreenSize);
-  });
+  }, []);
 
   useEffect(() => {
     if (screenSize <= 640) {
       dispatch(setCourseViewSidebar(false));
     } else dispatch(setCourseViewSidebar(true));
-  }, [screenSize]);
+  }, [screenSize, dispatch]);
 
   return (
     <>
       <div className="relative flex min-h-[calc(100vh-3.5rem)] ">
-        {/* view course side bar */}
         {courseViewSidebar && (
           <VideoDetailsSidebar setReviewModal={setReviewModal} />
         )}
 
-        <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto mt-14">
+        <div className="h-[calc(100vh-3.5rem)] overflow-auto flex-1 pt-8">
           <div className="mx-6">
             <Outlet />
           </div>

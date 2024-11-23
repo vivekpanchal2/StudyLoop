@@ -18,25 +18,43 @@ export default function InstructorChart({ courses }) {
     return colors;
   };
 
+  console.log(courses);
+
   const chartDataStudents = {
     labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: courses.map((course) => course.totalStudentsEnrolled),
+        data: courses.map((course) => {
+          return typeof course.totalStudents === "number"
+            ? course.totalStudents
+            : 0;
+        }),
         backgroundColor: generateRandomColors(courses.length),
       },
     ],
   };
 
+  console.log(chartDataStudents);
+
+  console.log(chartDataStudents);
+
   const chartIncomeData = {
     labels: courses.map((course) => course.courseName),
     datasets: [
       {
-        data: courses.map((course) => course.totalAmountGenerated),
+        data: courses.map((course) => {
+          return typeof course.totalRevenue === "number"
+            ? course.totalRevenue
+            : 0;
+        }),
         backgroundColor: generateRandomColors(courses.length),
       },
     ],
   };
+
+  console.log(chartIncomeData);
+
+  console.log(chartIncomeData);
 
   const options = {
     maintainAspectRatio: false,
@@ -67,7 +85,7 @@ export default function InstructorChart({ courses }) {
           Income
         </button>
       </div>
-      <div className="relative mx-auto aspect-square h-full w-full">
+      <div className="relative mx-auto  h-full w-full">
         <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}
           options={options}

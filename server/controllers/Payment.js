@@ -52,7 +52,6 @@ exports.capturePayment = async (req, res) => {
           message: error.message,
         });
       }
-      // totalAmount += course.price;
     }
     const options = {
       amount: totalAmount * 100,
@@ -61,10 +60,7 @@ exports.capturePayment = async (req, res) => {
     };
 
     try {
-      //initiate the payment using razorpay
       const paymentResponse = await instance.orders.create(options);
-      console.log("payment", paymentResponse);
-      //return response
       return res.status(200).json({
         success: true,
         orderId: paymentResponse.id,
@@ -93,14 +89,6 @@ exports.verifySignature = async (req, res) => {
   const { courses } = req.body;
   const userId = req.user.id;
 
-  console.log({
-    razorpay_payment_id,
-    razorpay_order_id,
-    razorpay_signature,
-    courses,
-    userId,
-  });
-
   if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
     return res.status(400).json({
       success: false,
@@ -118,41 +106,26 @@ exports.verifySignature = async (req, res) => {
       });
     }
     try {
-      //update the course
       for (const course_id of courses) {
-        console.log("verify courses=", course_id);
         const course = await Course.findByIdAndUpdate(
           course_id,
           { $push: { studentsEnrolled: userId } },
           { new: true }
         );
-        console.log(course);
-        console.log(course?.studentsEnrolled);
 
-        //update the user
         const user = await User.updateOne(
           { _id: userId },
           { $push: { courses: course_id } },
           { new: true }
         );
-        //set course progress
 
         const newCourseProgress = new CourseProgress({
           userId: userId,
           courseId: course_id,
         });
 
-        console.log(
-          "--------------------------------------------------------------"
-        );
-        console.log({ userId, course_id, newCourseProgress });
-        console.log(
-          "--------------------------------------------------------------"
-        );
-
         await newCourseProgress.save();
 
-        //add new course progress to user
         await User.findByIdAndUpdate(
           userId,
           {
@@ -160,9 +133,7 @@ exports.verifySignature = async (req, res) => {
           },
           { new: true }
         );
-        //send email
         const recipient = await User.findById(userId);
-        console.log("recipient=>", course);
         const courseName = course.courseName;
         const courseDescription = course.courseDescription;
         const thumbnail = course.thumbnail;
@@ -194,7 +165,6 @@ exports.verifySignature = async (req, res) => {
   };
 
   try {
-    //verify the signature
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(body.toString())
@@ -210,8 +180,6 @@ exports.verifySignature = async (req, res) => {
     });
   }
 };
-
-//send email
 
 exports.sendPaymentSuccessEmail = async (req, res) => {
   const { amount, paymentId, orderId } = req.body;

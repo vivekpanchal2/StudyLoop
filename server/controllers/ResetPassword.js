@@ -13,6 +13,7 @@ exports.resetPasswordToken = async (req, res) => {
         message: `This Email: ${email} is not Registered With Us Enter a Valid Email `,
       });
     }
+
     const token = crypto.randomBytes(20).toString("hex");
 
     const updatedDetails = await User.findOneAndUpdate(
@@ -23,7 +24,6 @@ exports.resetPasswordToken = async (req, res) => {
       },
       { new: true }
     );
-    console.log("DETAILS", updatedDetails);
 
     const url = `http://localhost:3000/update-password/${token}`;
 

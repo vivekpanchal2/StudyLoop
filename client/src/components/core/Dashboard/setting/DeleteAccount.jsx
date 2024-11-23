@@ -46,7 +46,7 @@ export default function DeleteAccount() {
                 text2: "You will be logged out of your account.",
                 btn1Text: "Delete",
                 btn2Text: "Cancel",
-                btn1Handler: handleDeleteAccount, // This should be a function reference, not wrapped in an object
+                btn1Handler: handleDeleteAccount,
                 btn2Handler: () => setConfirmationModalData(null),
               })
             }

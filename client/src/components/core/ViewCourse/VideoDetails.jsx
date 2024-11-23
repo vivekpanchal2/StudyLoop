@@ -156,7 +156,6 @@ const VideoDetails = () => {
 
   return (
     <div className="flex flex-col gap-5 text-white">
-      {/* Open-Close Sidebar Icon */}
       <div
         className="sm:hidden text-white absolute left-7 top-3 cursor-pointer"
         onClick={() => dispatch(setCourseViewSidebar(!courseViewSidebar))}
@@ -164,7 +163,6 @@ const VideoDetails = () => {
         {!courseViewSidebar && <HiMenuAlt1 size={33} />}
       </div>
 
-      {/* Video or Preview Image */}
       {!videoData ? (
         <img
           src={previewSource}
@@ -213,7 +211,7 @@ const VideoDetails = () => {
                   <button
                     disabled={loading}
                     onClick={goToPrevVideo}
-                    className="cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5 hover:bg-richblack-5 hover:text-richblack-800 duration-300;"
+                    className="cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-mono text-richblack-5 hover:bg-richblack-5 hover:text-richblack-800 duration-300;"
                   >
                     Prev
                   </button>
@@ -222,7 +220,7 @@ const VideoDetails = () => {
                   <button
                     disabled={loading}
                     onClick={goToNextVideo}
-                    className="cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5 hover:bg-richblack-5 hover:text-richblack-800 duration-300;"
+                    className="cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-mono text-richblack-5 hover:bg-richblack-5 hover:text-richblack-800 duration-300;"
                   >
                     Next
                   </button>
@@ -233,7 +231,6 @@ const VideoDetails = () => {
         </Player>
       )}
 
-      {/* Video Title and Description */}
       <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
       <p className="pt-2 pb-6">{videoData?.description}</p>
     </div>

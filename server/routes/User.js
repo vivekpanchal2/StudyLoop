@@ -25,5 +25,4 @@ router.post("/reset-password", resetPassword);
 router.get("/all-students", auth, isAdmin, getAllStudents);
 router.get("/all-instructors", auth, isAdmin, getAllInstructors);
 
-// Export the router for use in the main application
 module.exports = router;

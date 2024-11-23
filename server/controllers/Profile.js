@@ -13,7 +13,6 @@ exports.updateProfile = async (req, res) => {
     const id = req.user.id;
 
     const userDetails = await User.findById(id).populate("additionalDetails");
-    console.log(userDetails);
     const profile = await Profile.findById(userDetails.additionalDetails._id);
 
     if (userDetails) {
@@ -82,7 +81,6 @@ exports.getAllUserDetails = async (req, res) => {
     const userDetails = await User.findById(UserId)
       .populate("additionalDetails")
       .exec();
-    console.log(userDetails);
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
@@ -108,8 +106,6 @@ exports.updateDisplayPicture = async (req, res) => {
       1000,
       1000
     );
-
-    console.log(image);
 
     const updatedProfile = await User.findByIdAndUpdate(
       userId,
@@ -147,8 +143,6 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
-    console.log("-----------------------------------");
-    console.log(userDetails.courses[0].courseContent);
 
     userDetails = userDetails.toObject();
 
@@ -181,7 +175,6 @@ exports.getEnrolledCourses = async (req, res) => {
       if (SubsectionLength === 0) {
         userDetails.courses[i].progressPercentage = 100;
       } else {
-        // To make it up to 2 decimal point
         const multiplier = Math.pow(10, 2);
         userDetails.courses[i].progressPercentage =
           Math.round(
@@ -196,8 +189,6 @@ exports.getEnrolledCourses = async (req, res) => {
         message: `Could not find user with id: ${userDetails}`,
       });
     }
-
-    console.log(userDetails);
 
     return res.status(200).json({
       success: true,
@@ -227,6 +218,7 @@ exports.instructorDashboard = async (req, res) => {
         totalStudents,
         totalRevenue,
       };
+
       return courseStats;
     });
     res.status(200).json({

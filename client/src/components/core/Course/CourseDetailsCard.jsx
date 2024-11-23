@@ -3,10 +3,8 @@ import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { BsFillCaretRightFill } from "react-icons/bs";
 import { FaShareSquare } from "react-icons/fa";
-
 import { addToCart } from "../../../slices/cartSlice";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
 import Img from "./../../common/Img";
@@ -16,7 +14,6 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const {
     thumbnail: ThumbnailImage,
@@ -47,7 +44,6 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
       btn2Handler: () => setConfirmationModal(null),
     });
   };
-
 
   return (
     <>

@@ -24,8 +24,6 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
 
   const { courseViewSidebar } = useSelector((state) => state.sidebar);
 
-  
-
   useEffect(() => {
     if (courseSectionData.length === 0) return;
 

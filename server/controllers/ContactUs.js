@@ -5,8 +5,6 @@ exports.contactUsController = async (req, res) => {
   const { email, firstname, lastname, phoneNo, countrycode, message } =
     req.body;
 
-  console.log(req.body);
-
   try {
     const emailRes = await mailSender(
       email,
