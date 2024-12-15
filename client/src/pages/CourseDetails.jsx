@@ -87,7 +87,6 @@ function CourseDetails() {
         <p className="h-4 w-[75%] lg:w-[30%] rounded-xl skeleton"></p>
         <p className="h-4 w-[35%] lg:w-[10%] rounded-xl skeleton"></p>
 
-        {/* Floating Courses Card */}
         <div
           className="right-[1.5rem] top-[20%] hidden lg:block lg:absolute min-h-[450px] w-1/3 max-w-[410px] 
               translate-y-24 md:translate-y-0 rounded-xl skeleton"

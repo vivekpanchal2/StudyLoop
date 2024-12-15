@@ -6,7 +6,7 @@ const TimeLine = [
   {
     Logo: FaChalkboardTeacher,
     Heading: "Leadership",
-    Description: "Fully committed to the success company",
+    Description: "Fully committed to the success",
   },
   {
     Logo: RiGraduationCapFill,
@@ -32,7 +32,7 @@ const TimelineSection = () => {
         {TimeLine.map((ele, i) => {
           const IconComponent = ele.Logo;
           return (
-            <div className="flex flex-col lg:gap-3" key={i}>
+            <div className="flex flex-col gap-3" key={i}>
               <div className="flex gap-6">
                 <div className="w-[52px] h-[52px] bg-white rounded-full flex justify-center items-center shadow-lg">
                   <IconComponent className="text-2xl text-caribbeangreen-600 text-rose-500" />

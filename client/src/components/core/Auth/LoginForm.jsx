@@ -91,6 +91,9 @@ function LoginForm() {
       >
         Sign In
       </button>
+      <Link to={"/signup"} className="text-white text-center">
+        New User? SignUp
+      </Link>
     </form>
   );
 }

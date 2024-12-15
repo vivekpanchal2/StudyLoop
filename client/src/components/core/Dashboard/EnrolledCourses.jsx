@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { getUserEnrolledCourses } from "../../../services/operations/profileAPI";
+import { setLoading } from "../../../slices/profileSlice";
+import LoaderPage from "../../common/Loader";
 
 export default function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.profile);
+
+  const dispatch = useDispatch();
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
-  const getEnrolledCourses = async () => {
+
+  const getEnrolledCourses = useCallback(async () => {
     try {
       const res = await getUserEnrolledCourses(token);
 
@@ -18,13 +24,15 @@ export default function EnrolledCourses() {
     } catch (error) {
       console.log("Could not fetch enrolled courses.");
     }
-  };
-
-  console.log(enrolledCourses);
+  }, [dispatch, token]);
 
   useEffect(() => {
     getEnrolledCourses();
-  }, []);
+  }, [getEnrolledCourses]);
+
+  if (loading) {
+    return <LoaderPage />;
+  }
 
   return (
     <>

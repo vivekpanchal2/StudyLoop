@@ -1,7 +1,4 @@
 import { toast } from "react-hot-toast";
-
-// import { updateCompletedLectures } from "../../slices/viewCourseSlice";
-// import { setLoading } from "../../slices/profileSlice";
 import { apiConnector } from "../apiconnector";
 import { courseEndpoints } from "../apis";
 
@@ -25,7 +22,7 @@ const {
 } = courseEndpoints;
 
 export const getAllCourses = async () => {
-  const toastId = toast.loading("Loading...");
+  const toastId = toast.loading("Loadingss...");
   let result = [];
   try {
     const response = await apiConnector("GET", GET_ALL_COURSE_API);
@@ -434,4 +431,3 @@ export const createRating = async (data, token) => {
   toast.dismiss(toastId);
   return success;
 };
-

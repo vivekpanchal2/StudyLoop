@@ -24,43 +24,57 @@ function ReviewSlider() {
         ratingsEndpoints.REVIEWS_DETAILS_API
       );
 
-      console.log({ response });
-
       if (response.data) {
         setReviews(response.data.allReviews);
       }
     })();
   }, []);
 
-  console.log("reviews= ", reviews);
-  if (!reviews) return;
+  const Shimmer = () => (
+    <div className="flex flex-col gap-3 bg-richblack-800 p-3 text-[14px] text-richblack-25 min-h-[180px] max-h-[180px] glass-bg animate-pulse">
+      <div className="flex items-center gap-4">
+        <div className="h-9 w-9 rounded-full bg-gray-700"></div>
+        <div className="flex flex-col gap-1 w-full">
+          <div className="h-4 w-2/3 bg-gray-700 rounded"></div>
+          <div className="h-3 w-1/3 bg-gray-600 rounded"></div>
+        </div>
+      </div>
+      <div className="h-4 w-full bg-gray-700 rounded mt-2"></div>
+      <div className="h-4 w-5/6 bg-gray-600 rounded"></div>
+      <div className="h-4 w-2/3 bg-gray-700 rounded"></div>
+      <div className="flex items-center gap-2 mt-2">
+        <div className="h-4 w-6 bg-gray-700 rounded"></div>
+        <div className="h-4 w-20 bg-gray-600 rounded"></div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="text-white">
       <div className="my-[50px] h-[184px] max-w-maxContentTab lg:max-w-maxContent">
-        <Swiper
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
-          spaceBetween={25}
-          loop={true}
-          freeMode={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          className="w-full "
-        >
-          {reviews.map((review, i) => {
-            return (
+        {reviews ? (
+          <Swiper
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
+            spaceBetween={25}
+            loop={true}
+            freeMode={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            className="w-full"
+          >
+            {reviews.map((review, i) => (
               <SwiperSlide key={i}>
                 <div className="flex flex-col gap-3 bg-richblack-800 p-3 text-[14px] text-richblack-25 min-h-[180px] max-h-[180px] glass-bg">
                   <div className="flex items-center gap-4">
@@ -80,7 +94,6 @@ function ReviewSlider() {
                       </h2>
                     </div>
                   </div>
-
                   <p className="font-medium text-richblack-25">
                     {review?.review.split(" ").length > truncateWords
                       ? `${review?.review
@@ -89,15 +102,13 @@ function ReviewSlider() {
                           .join(" ")} ...`
                       : `${review?.review}`}
                   </p>
-
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-yellow-100">
-                      {/* {isNaN(review.rating) ? "N/A" : review.rating.toFixed(1)} */}
                       {review.rating}
                     </h3>
                     <ReactStars
                       count={5}
-                      value={parseInt(review.rating)} // Convert to a number
+                      value={parseInt(review.rating)}
                       size={20}
                       edit={false}
                       activeColor="#ffd700"
@@ -107,10 +118,17 @@ function ReviewSlider() {
                   </div>
                 </div>
               </SwiperSlide>
-            );
-          })}
-          {/* <SwiperSlide>Slide 1</SwiperSlide> */}
-        </Swiper>
+            ))}
+          </Swiper>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array(4)
+              .fill(0)
+              .map((_, i) => (
+                <Shimmer key={i} />
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

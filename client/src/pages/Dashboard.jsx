@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/core/Dashboard/Sidebar";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import LoaderPage from "../components/common/Loader";
 
 export default function Dashboard() {
   const { loading: authLoading } = useSelector((state) => state.auth);
@@ -10,11 +11,7 @@ export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   if (authLoading || profileLoading) {
-    return (
-      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-        <div className="spinner"></div>
-      </div>
-    );
+    return <LoaderPage />;
   }
 
   return (

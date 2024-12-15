@@ -1,11 +1,11 @@
 import { toast } from "react-hot-toast";
-import { setProgress } from "../../slices/loadingBarSlice";
 import { apiConnector } from "../apiconnector";
 import { catalogData } from "../apis";
+import { setLoading } from "../../slices/authSlice";
 
 export const getCatalogaPageData = async (categoryId, dispatch) => {
-  // const toastId = toast.loading("Loading...");
-  dispatch(setProgress(50));
+  const toastId = toast.loading("Loading...");
+  dispatch(setLoading(true));
   let result = [];
   try {
     const response = await apiConnector(
@@ -13,6 +13,7 @@ export const getCatalogaPageData = async (categoryId, dispatch) => {
       catalogData.CATALOGPAGEDATA_API,
       { categoryId: categoryId }
     );
+
     console.log("CATALOG PAGE DATA API RESPONSE....", response);
     if (!response.data.success)
       throw new Error("Could not Fetch Category page data error", response);
@@ -23,7 +24,7 @@ export const getCatalogaPageData = async (categoryId, dispatch) => {
     toast.error("No Course added to this category yet");
     result = error.response?.data;
   }
-  // toast.dismiss(toastId);
-  dispatch(setProgress(100));
+  dispatch(setLoading(false));
+  toast.dismiss(toastId);
   return result;
 };

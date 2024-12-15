@@ -41,6 +41,7 @@ export function getUserDetails(token, navigate) {
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...");
   let result = [];
+  // dispatch(setLoading(true));
   try {
     console.log("BEFORE Calling BACKEND API FOR ENROLLED COURSES");
     const response = await apiConnector(
@@ -63,6 +64,7 @@ export async function getUserEnrolledCourses(token) {
     toast.error("Could Not Get Enrolled Courses");
   }
   toast.dismiss(toastId);
+  // dispatch(setLoading(false));
   return result;
 }
 

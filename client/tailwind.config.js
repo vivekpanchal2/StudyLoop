@@ -129,6 +129,9 @@ module.exports = {
         maxContent: "1260px",
         maxContentTab: "650px",
       },
+      animation: {
+        "spin-reverse": "spin 1s linear infinite reverse",
+      },
     },
   },
   plugins: [],

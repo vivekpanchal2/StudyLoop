@@ -8,9 +8,10 @@ import CourseSlider from "../components/core/Catalog/CourseSlider";
 import { useDispatch, useSelector } from "react-redux";
 import Error from "./Error";
 import CatalogCard from "../components/core/Catalog/CatalogCard";
+import LoaderPage from "../components/common/Loader";
 
 const Catalog = () => {
-  const { loading } = useSelector((state) => state.profile);
+  const { loading } = useSelector((state) => state.auth);
   const { catalogName } = useParams();
 
   const [active, setActive] = useState(1);
@@ -49,11 +50,7 @@ const Catalog = () => {
   }, [categoryId]);
 
   if (loading || !catalogPageData) {
-    return (
-      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-        <div className="spinner"></div>
-      </div>
-    );
+    return <LoaderPage />;
   }
 
   if (!loading && !catalogPageData.success) {

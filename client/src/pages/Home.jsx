@@ -9,6 +9,7 @@ import Footer from "../components/common/Footer.jsx";
 import { TypeAnimation } from "react-type-animation";
 import ExploreMore from "../components/core/HomePage/ExploreMore.jsx";
 import ReviewSlider from "../components/common/ReviewSlider.jsx";
+import LearningLanguageSection from "../components/core/HomePage/LearninLanguage.jsx";
 
 function Home() {
   return (
@@ -167,6 +168,7 @@ function Home() {
 
       <div className="bg-richblack-900 text-white my-24 ">
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
+          <LearningLanguageSection />
           <div className="text-4xl font-bold text-center my-10">
             Unlock <HighlightText text={"Skills "} />
             for the Jobs of
