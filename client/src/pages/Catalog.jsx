@@ -123,11 +123,11 @@ const Catalog = () => {
           Frequently Bought
         </div>
         <div className="py-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             {catalogPageData?.mostSellingCourses
-              ?.slice(0, 4)
+              ?.slice(0, 6)
               .map((course, i) => (
-                <CatalogCard course={course} key={i} Height={"h-[400px]"} />
+                <CatalogCard course={course} key={i} Height={"h-[300px]"} />
               ))}
           </div>
         </div>

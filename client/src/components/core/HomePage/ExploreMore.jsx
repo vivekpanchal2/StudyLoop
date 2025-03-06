@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HomePageExplore } from "../../../data/homepage-explore";
 
 import CourseCard from "./CourseCard";
@@ -7,7 +7,7 @@ import HighlightText from "./HighlightText";
 export default function ExploreMore() {
   const [currentTab, setCurrentTab] = useState(HomePageExplore[0].tag);
   const [courses, setCourses] = useState(HomePageExplore[0].courses);
-  const [currentCard, setCurrentCard] = useState("");
+  const [currentCard, setCurrentCard] = useState(courses[0].heading);
 
   const handleTabChange = (tag) => {
     setCurrentTab(tag);

@@ -25,6 +25,7 @@ import ViewCourse from "./pages/ViewCourse";
 import AllInstructors from "./components/core/Dashboard/AllInstructors";
 import AllStudents from "./components/core/Dashboard/AllStudents";
 import CreateCategory from "./components/core/Dashboard/CreateCategory";
+import SearchCoursesPage from "./pages/SearchCoursesPage";
 
 function App() {
   return (
@@ -35,11 +36,12 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/update-password/:id" element={<UpdatePassword />} />
         <Route path="/catalog/:catalogName" element={<Catalog />} />
+        <Route path="/search" element={<SearchCoursesPage />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="/dashboard/my-profile" element={<MyProfile />} />
           <Route path="/dashboard/settings" element={<Settings />} />
