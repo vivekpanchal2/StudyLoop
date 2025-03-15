@@ -3,9 +3,9 @@ import { FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const SearchCoursesPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const popularTopics = [
     { name: "MERN Stack", path: "/catalog/mern" },
@@ -18,80 +18,114 @@ const SearchCoursesPage = () => {
     { name: "Web3 & Blockchain", path: "/catalog/web3" },
   ];
 
+  // Dummy autocomplete suggestions based on popular topics
+  const allSuggestions = popularTopics.map((topic) => topic.name);
+  const filteredSuggestions = allSuggestions.filter((s) =>
+    s.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     console.log("Search submitted:", searchQuery);
   };
 
   return (
-    <div className="min-h-screen bg-richblack-900 flex flex-col items-center justify-start pt-20 px-4">
-      {/* Animated Search Container */}
+    <div className="min-h-[calc(100vh-3.5rem)] bg-gradient-to-r from-richblack-900 to-blue-900 flex flex-col items-center pt-24 px-6 text-richblack-100 relative">
+      {/* Main Content */}
       <div
-        className={`w-full max-w-2xl transition-all duration-500 ${
-          isFocused ? "scale-110 -translate-y-12" : ""
-        }`}
+        className={`${
+          isFocused ? "filter blur-sm" : ""
+        } transition-all duration-300 w-full max-w-3xl text-center`}
       >
-        <form onSubmit={handleSearchSubmit} className="relative">
-          <div
-            className={`absolute inset-0 bg-richblack-800 blur-lg opacity-30 transition-opacity ${
-              isFocused ? "opacity-50" : ""
-            }`}
-          ></div>
-          <div className="relative">
-            <FiSearch
-              className={`absolute left-4 top-1/2 -translate-y-1/2 text-2xl ${
-                isFocused ? "text-blue-200" : "text-richblack-400"
-              } transition-all duration-300`}
-            />
+        <h1 className="text-5xl font-extrabold text-blue-400 mb-4 drop-shadow-lg">
+          Unlock Your Coding Potential
+        </h1>
+        <p className="text-lg font-medium text-richblack-300 mb-10">
+          Dive into our curated selection of courses and start building the
+          future with code.
+        </p>
+        <form onSubmit={handleSearchSubmit} className="relative w-full">
+          <div className="relative w-full">
+            <FiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-2xl text-richblack-400" />
             <input
               ref={inputRef}
               type="text"
-              placeholder="Search courses, technologies, or topics..."
-              className="w-full py-6 pl-14 pr-6 text-lg bg-richblack-800/70 backdrop-blur-sm rounded-2xl border-2 border-richblack-700 focus:border-blue-300 focus:outline-none text-richblack-100 placeholder-richblack-400 transition-all duration-300"
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              placeholder="Search for courses, technologies..."
+              className="w-full py-4 pl-14 pr-6 text-lg bg-richblack-800 rounded-full border border-richblack-700 focus:border-blue-400 focus:outline-none placeholder-richblack-400 transition-all duration-300 shadow-xl"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setIsFocused(true)}
             />
           </div>
         </form>
       </div>
 
-      {/* Popular Topics Grid */}
-      <div className="mt-16 w-full max-w-4xl">
-        <h3 className="text-richblack-300 text-center mb-8 text-xl font-medium">
-          Popular Learning Paths
+      <div
+        className={`${
+          isFocused ? "filter blur-sm" : ""
+        } transition-all duration-300 mt-10 w-full max-w-4xl`}
+      >
+        <h3 className="text-center text-2xl font-semibold text-richblack-300 mb-4">
+          Trending Topics
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="flex flex-wrap justify-center gap-4">
           {popularTopics.map((topic) => (
             <Link
               to={topic.path}
               key={topic.name}
-              className="group relative p-4 bg-richblack-800 rounded-xl hover:bg-richblack-700 transition-all duration-300 overflow-hidden"
+              className="relative font-medium text-[18px] tracking-[0.05em] rounded-[0.8em] cursor-pointer border   bg-gradient-to-r from-[#8e2de2] to-[#4a00e0] text-white overflow-hidden active:scale-95 transition-all duration-300 flex items-center justify-center px-6 py-4
+                   before:content-[''] before:absolute before:top-0 before:right-[-10%] before:w-[120%] before:h-full before:bg-black before:skew-x-[-30deg] before:transition-transform before:duration-[400ms] before:ease-[cubic-bezier(0.3,1,0.8,1)]
+                   hover:before:-translate-x-full hover:text-white"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-              <span className="text-richblack-100 group-hover:text-blue-300 transition-colors duration-300 font-medium">
-                {topic.name}
-              </span>
+              <span className="relative z-10">{topic.name}</span>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+      {/* Search Overlay for Autocomplete */}
+      {isFocused && (
+        <div
+          className="fixed inset-0 z-20 flex flex-col items-center justify-start pt-24 bg-black bg-opacity-50 backdrop-blur-md"
+          onClick={() => setIsFocused(false)}
+        >
           <div
-            key={i}
-            className="absolute w-0.5 h-0.5 bg-richblack-600 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 10 + 5}s infinite`,
-            }}
-          ></div>
-        ))}
-      </div>
+            className="w-full max-w-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <form onSubmit={handleSearchSubmit} className="relative w-full">
+              <div className="relative w-full">
+                <FiSearch className="absolute left-5 top-1/2 transform -translate-y-1/2 text-2xl text-richblack-400" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="Search for courses, technologies..."
+                  className="w-full py-4 pl-14 pr-6 text-lg bg-richblack-800 rounded-full border border-richblack-700 focus:border-blue-400 focus:outline-none placeholder-richblack-400 transition-all duration-300 shadow-xl"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                />
+              </div>
+            </form>
+            {filteredSuggestions.length > 0 && (
+              <div className="absolute mt-2 w-full bg-richblack-800 rounded-lg shadow-lg z-30">
+                {filteredSuggestions.map((s, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
+                    onClick={() => {
+                      setSearchQuery(s);
+                      setIsFocused(false);
+                    }}
+                  >
+                    {s}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
